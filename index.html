@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090b0d" />
+    <title>Notely — Your space to think</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #090b0d;
+            --panel: #111519;
+            --panel2: #151b20;
+            --line: #252e33;
+            --text: #f4f4ef;
+            --muted: #8d999d;
+            --gold: #d6ad62;
+            --cyan: #69d8d3;
+            --purple: #a18aff;
+            --danger: #ff7777;
+            --shadow: 0 24px 70px #0008
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(ellipse at 78% 0%, #19333855, transparent 34%), radial-gradient(ellipse at 4% 15%, #6d51251c, transparent 30%), var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        .app {
+            min-height: 100vh
+        }
+
+        .topbar {
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5.5%;
+            border-bottom: 1px solid #ffffff12;
+            background: #090b0dcc;
+            backdrop-filter: blur(18px);
+            position: sticky;
+            top: 0;
+            z-index: 5
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font: 800 21px Manrope, sans-serif;
+            letter-spacing: -.8px
+        }
+
+        .brandmark {
+            height: 34px;
+            width: 34px;
+            border-radius: 11px;
+            background: linear-gradient(145deg, var(--gold), #8b6733);
+            display: grid;
+            place-items: center;
+            color: #101214;
+            font-weight: 900
+        }
+
+        .brand em {
+            color: var(--gold);
+            font-style: normal
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        .btn {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 10px 16px;
+            background: #151b20;
+            color: var(--text);
+            font-weight: 600;
+            transition: .2s
+        }
+
+        .btn:hover {
+            border-color: var(--cyan);
+            transform: translateY(-1px)
+        }
+
+        .btn.primary {
+            background: linear-gradient(110deg, var(--gold), #f0d28e);
+            color: #17130b;
+            border: 0
+        }
+
+        .btn.cyan {
+            background: var(--cyan);
+            color: #071313;
+            border: 0
+        }
+
+        .btn.danger {
+            color: var(--danger);
+            border-color: #713d42
+        }
+
+        .btn.ghost {
+            background: transparent
+        }
+
+        .btn.small {
+            padding: 7px 11px;
+            font-size: 12px;
+            border-radius: 9px
+        }
+
+        .shell {
+            max-width: 1320px;
+            margin: auto;
+            padding: 36px 5.5% 70px
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 40px;
+            align-items: center;
+            padding: 45px 0 55px
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 15px var(--cyan)
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0
+        }
+
+        h1 {
+            font: 800 clamp(42px, 5.3vw, 72px)/1.07 Manrope, sans-serif;
+            letter-spacing: -3px;
+            margin: 20px 0
+        }
+
+        .gold {
+            color: var(--gold)
+        }
+
+        .cyan {
+            color: var(--cyan)
+        }
+
+        .hero p {
+            max-width: 550px;
+            color: #a7b0b2;
+            font-size: 16px;
+            line-height: 1.8
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 26px
+        }
+
+        .preview {
+            min-height: 330px;
+            border: 1px solid #ffffff20;
+            border-radius: 24px;
+            background: linear-gradient(145deg, #172329, #101316 70%);
+            padding: 23px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden
+        }
+
+        .preview:before {
+            content: '';
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: #56c9c322;
+            filter: blur(55px);
+            right: -60px;
+            top: -80px
+        }
+
+        .preview-head {
+            display: flex;
+            justify-content: space-between;
+            color: #b8c4c5;
+            font-size: 12px;
+            position: relative
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 24px;
+            position: relative
+        }
+
+        .mini-note {
+            background: #1c262b;
+            border: 1px solid #ffffff12;
+            border-radius: 15px;
+            padding: 17px;
+            min-height: 115px
+        }
+
+        .mini-note:nth-child(2) {
+            background: #29251d
+        }
+
+        .mini-note:nth-child(3) {
+            background: #182a2b
+        }
+
+        .mini-note b {
+            display: block;
+            margin: 12px 0 7px
+        }
+
+        .mini-note small {
+            color: #9aa7a8;
+            line-height: 1.5
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 5px 0 50px
+        }
+
+        .stat {
+            border: 1px solid var(--line);
+            background: #111619c9;
+            border-radius: 16px;
+            padding: 18px 20px
+        }
+
+        .stat strong {
+            font: 700 26px Manrope;
+            color: var(--gold)
+        }
+
+        .stat span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px
+        }
+
+        .section-title {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            margin: 38px 0 18px
+        }
+
+        .section-title h2 {
+            font: 700 25px Manrope;
+            margin: 0
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px
+        }
+
+        .feature {
+            border: 1px solid var(--line);
+            background: linear-gradient(145deg, #141a1e, #0e1215);
+            border-radius: 17px;
+            padding: 22px
+        }
+
+        .feature .ico {
+            font-size: 23px;
+            color: var(--cyan)
+        }
+
+        .feature h3 {
+            font: 700 16px Manrope;
+            margin: 15px 0 8px
+        }
+
+        .feature p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 0
+        }
+
+        .footer {
+            border-top: 1px solid #ffffff12;
+            padding: 25px 5.5%;
+            color: #758184;
+            font-size: 12px;
+            text-align: center
+        }
+
+        .auth-wrap {
+            min-height: calc(100vh - 76px);
+            display: grid;
+            place-items: center;
+            padding: 35px 18px
+        }
+
+        .auth-card {
+            width: min(450px, 100%);
+            border: 1px solid var(--line);
+            border-radius: 23px;
+            background: linear-gradient(145deg, #151b20, #0e1215);
+            padding: 32px;
+            box-shadow: var(--shadow)
+        }
+
+        .auth-card h2 {
+            font: 800 30px Manrope;
+            margin: 10px 0
+        }
+
+        .auth-card>p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 25px
+        }
+
+        .field {
+            display: grid;
+            gap: 7px;
+            margin: 15px 0
+        }
+
+        .field label {
+            font-size: 12px;
+            color: #b7c1c1;
+            font-weight: 600
+        }
+
+        .field input,
+        .field textarea,
+        .search {
+            width: 100%;
+            border: 1px solid #2a353a;
+            background: #0b1013;
+            color: var(--text);
+            border-radius: 11px;
+            padding: 12px 13px;
+            outline: none
+        }
+
+        .field input:focus,
+        .field textarea:focus,
+        .search:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 3px #69d8d31a
+        }
+
+        .full {
+            width: 100%;
+            margin-top: 10px
+        }
+
+        .switch {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            margin: 20px 0 0
+        }
+
+        .link {
+            border: 0;
+            background: none;
+            color: var(--cyan);
+            font-weight: 700;
+            padding: 0
+        }
+
+        .message {
+            font-size: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: #6b343422;
+            color: #ffaaaa;
+            margin: 12px 0
+        }
+
+        .message.ok {
+            background: #1c665022;
+            color: #8fe5bc
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 225px 1fr;
+            gap: 26px;
+            max-width: 1440px;
+            margin: auto;
+            padding: 28px 4.5% 60px
+        }
+
+        .sidebar {
+            border: 1px solid var(--line);
+            background: #101518;
+            border-radius: 19px;
+            padding: 18px;
+            height: fit-content;
+            position: sticky;
+            top: 96px
+        }
+
+        .side-label {
+            font-size: 10px;
+            color: #718084;
+            letter-spacing: 1.6px;
+            font-weight: 700;
+            margin: 14px 10px
+        }
+
+        .navbtn {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #aab5b6;
+            text-align: left;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 3px 0;
+            font-weight: 600;
+            font-size: 13px
+        }
+
+        .navbtn.active,
+        .navbtn:hover {
+            background: #203033;
+            color: var(--cyan)
+        }
+
+        .user-chip {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 14px 7px 3px;
+            margin-top: 18px;
+            border-top: 1px solid var(--line)
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 12px;
+            background: linear-gradient(145deg, var(--gold), #73562e);
+            display: grid;
+            place-items: center;
+            color: #15110a;
+            font-weight: 800
+        }
+
+        .user-chip b {
+            font-size: 12px;
+            display: block
+        }
+
+        .user-chip small {
+            color: var(--muted);
+            font-size: 10px
+        }
+
+        .mainarea {
+            min-width: 0
+        }
+
+        .dash-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin: 5px 0 25px
+        }
+
+        .dash-head h1 {
+            font-size: 32px;
+            letter-spacing: -1.3px;
+            margin: 0 0 5px
+        }
+
+        .dash-head p {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 0
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 9px;
+            align-items: center;
+            margin: 20px 0
+        }
+
+        .search {
+            max-width: 340px
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px
+        }
+
+        .note-card {
+            background: #141a1e;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 17px;
+            min-height: 190px;
+            display: flex;
+            flex-direction: column;
+            transition: .2s
+        }
+
+        .note-card:hover {
+            transform: translateY(-3px);
+            border-color: #52676a
+        }
+
+        .note-card.goldtone {
+            background: linear-gradient(145deg, #29251b, #171713)
+        }
+
+        .note-card.cyantone {
+            background: linear-gradient(145deg, #172a2b, #13191b)
+        }
+
+        .note-card.purpletone {
+            background: linear-gradient(145deg, #242035, #15141d)
+        }
+
+        .note-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .tag {
+            font-size: 10px;
+            color: var(--cyan);
+            background: #69d8d318;
+            padding: 5px 8px;
+            border-radius: 20px
+        }
+
+        .note-card h3 {
+            font: 700 16px Manrope;
+            margin: 17px 0 8px;
+            overflow-wrap: anywhere
+        }
+
+        .note-card p {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .note-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #718084;
+            font-size: 10px;
+            margin-top: 14px
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 6px
+        }
+
+        .iconbtn {
+            border: 1px solid #ffffff18;
+            background: #0e1316;
+            color: #aeb9b9;
+            border-radius: 8px;
+            padding: 6px 8px;
+            font-size: 11px
+        }
+
+        .empty {
+            border: 1px dashed #39464a;
+            border-radius: 17px;
+            padding: 50px 20px;
+            text-align: center;
+            color: var(--muted);
+            grid-column: 1/-1
+        }
+
+        .empty .big {
+            font-size: 35px;
+            margin-bottom: 10px
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            background: #11171a;
+            border-radius: 18px;
+            padding: 24px;
+            max-width: 650px
+        }
+
+        .panel h2 {
+            font: 700 21px Manrope
+        }
+
+        .modal-back {
+            position: fixed;
+            inset: 0;
+            background: #000a;
+            display: grid;
+            place-items: center;
+            padding: 18px;
+            z-index: 10
+        }
+
+        .modal {
+            width: min(560px, 100%);
+            background: #141a1e;
+            border: 1px solid #344247;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow)
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .modal-head h2 {
+            font: 700 21px Manrope
+        }
+
+        .modal textarea {
+            min-height: 180px;
+            resize: vertical
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 9px;
+            margin-top: 15px
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        @media(max-width:900px) {
+            .hero {
+                grid-template-columns: 1fr
+            }
+
+            .preview {
+                max-width: 650px
+            }
+
+            .workspace {
+                grid-template-columns: 1fr
+            }
+
+            .sidebar {
+                position: static;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                overflow: auto;
+                padding: 9px
+            }
+
+            .side-label,
+            .user-chip {
+                display: none
+            }
+
+            .navbtn {
+                white-space: nowrap;
+                width: auto
+            }
+
+            .notes-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+        }
+
+        @media(max-width:600px) {
+            .topbar {
+                height: 64px;
+                padding: 0 18px
+            }
+
+            .shell {
+                padding: 25px 18px 50px
+            }
+
+            .hero {
+                padding: 25px 0 35px;
+                gap: 25px
+            }
+
+            h1 {
+                letter-spacing: -2px
+            }
+
+            .stats {
+                gap: 8px
+            }
+
+            .stat {
+                padding: 13px
+            }
+
+            .stat strong {
+                font-size: 21px
+            }
+
+            .features {
+                grid-template-columns: 1fr
+            }
+
+            .workspace {
+                padding: 18px 14px 40px;
+                gap: 15px
+            }
+
+            .notes-grid {
+                grid-template-columns: 1fr
+            }
+
+            .dash-head {
+                align-items: flex-start;
+                flex-direction: column
+            }
+
+            .toolbar {
+                flex-wrap: wrap
+            }
+
+            .search {
+                max-width: none;
+                flex: 1;
+                min-width: 150px
+            }
+
+            .auth-card {
+                padding: 24px
+            }
+
+            .hero-buttons {
+                flex-wrap: wrap
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="module">
+        import React, { useState, useEffect, createElement as h } from 'react';
+        import { createRoot } from 'react-dom/client';
+        const API = 'http://localhost:8080';
+        const el = (tag, props, ...children) => h(tag, props, ...children.flat());
+        const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback } catch { return fallback } };
+        function App() {
+            const [page, setPage] = useState(localStorage.getItem('notely_token') ? 'dashboard' : 'home');
+            const [token, setToken] = useState(localStorage.getItem('notely_token') || '');
+            const [user, setUser] = useState(read('notely_user', null));
+            const [notes, setNotes] = useState(read('notely_notes', []));
+            const [active, setActive] = useState('all'); const [query, setQuery] = useState('');
+            const [modal, setModal] = useState(false); const [editing, setEditing] = useState(null);
+            const [form, setForm] = useState({ title: '', body: '', category: 'Personal' });
+            const [authMode, setAuthMode] = useState('login'); const [authForm, setAuthForm] = useState({ name: '', email: '', password: '' });
+            const [message, setMessage] = useState(''); const [busy, setBusy] = useState(false);
+            useEffect(() => { localStorage.setItem('notely_notes', JSON.stringify(notes)) }, [notes]);
+            useEffect(() => { if (user) localStorage.setItem('notely_user', JSON.stringify(user)) }, [user]);
+            const request = async (path, method = 'GET', body = null, auth = true) => { const headers = { 'Content-Type': 'application/json' }; if (auth && token) headers.Authorization = 'Bearer ' + token; const res = await fetch(API + path, { method, headers, ...(body ? { body: JSON.stringify(body) } : {}) }); let data = {}; try { data = await res.json() } catch { } if (!res.ok) throw Error(data.msg || data.message || `Request failed (${res.status})`); return data };
+            const goAuth = (mode) => { setAuthMode(mode); setMessage(''); setPage('auth') };
+            const submitAuth = async (e) => { e.preventDefault(); setBusy(true); setMessage(''); try { if (authMode === 'signup') { const d = await request('/user/register', 'POST', { name: authForm.name, email: authForm.email, password: authForm.password }, false); setMessage(d.msg || 'Account created. Please log in.'); setAuthMode('login') } else { const d = await request('/user/login', 'POST', { email: authForm.email, password: authForm.password }, false); if (!d.token) throw Error(d.msg || 'Login failed'); localStorage.setItem('notely_token', d.token); setToken(d.token); const payload = JSON.parse(atob(d.token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))); const u = { name: authForm.name || localStorage.getItem('notely_name') || authForm.email.split('@')[0], email: authForm.email, id: payload.id, role: payload.role }; setUser(u); localStorage.setItem('notely_user', JSON.stringify(u)); setPage('dashboard'); setMessage('') } } catch (err) { setMessage(err.message) } finally { setBusy(false) } };
+            const logout = () => { localStorage.removeItem('notely_token'); localStorage.removeItem('notely_user'); setToken(''); setUser(null); setPage('home'); setActive('all') };
+            const openNew = () => { setEditing(null); setForm({ title: '', body: '', category: 'Personal' }); setModal(true) };
+            const saveNote = (e) => { e.preventDefault(); if (!form.title.trim() && !form.body.trim()) return; if (editing) setNotes(notes.map(n => n.id === editing ? { ...n, ...form, updatedAt: Date.now() } : n)); else setNotes([{ ...form, id: crypto.randomUUID(), createdAt: Date.now(), pinned: false }, ...notes]); setModal(false) };
+            const editNote = (n) => { setEditing(n.id); setForm({ title: n.title, body: n.body, category: n.category }); setModal(true) };
+            const removeNote = (id) => { if (confirm('Delete this note permanently from this browser?')) setNotes(notes.filter(n => n.id !== id)) };
+            const togglePin = (id) => setNotes(notes.map(n => n.id === id ? { ...n, pinned: !n.pinned } : n));
+            const filtered = notes.filter(n => (active === 'all' || (active === 'pinned' ? n.pinned : n.category === active)) && (`${n.title} ${n.body} ${n.category}`).toLowerCase().includes(query.toLowerCase())).sort((a, b) => Number(b.pinned) - Number(a.pinned));
+            const date = (v) => new Date(v || Date.now()).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+            const nav = (id, label, icon) => el('button', { className: 'navbtn ' + (active === id ? 'active' : ''), onClick: () => { setActive(id); setPage('dashboard') } }, icon + '  ' + label);
+            const header = el('header', { className: 'topbar' }, el('div', { className: 'brand', onClick: () => setPage(token ? 'dashboard' : 'home'), style: { cursor: 'pointer' } }, el('span', { className: 'brandmark' }, 'N'), el('span', null, 'note', el('em', null, 'ly'), '.')), el('div', { className: 'top-actions' }, token ? el(React.Fragment, null, el('span', { className: 'muted', style: { fontSize: 12 } }, user?.name || 'Welcome'), el('button', { className: 'btn small', onClick: logout }, 'Log out')) : el(React.Fragment, null, el('button', { className: 'btn ghost', onClick: () => goAuth('login') }, 'Log in'), el('button', { className: 'btn primary', onClick: () => goAuth('signup') }, 'Get started'))));
+            const landing = el(React.Fragment, null, el('main', { className: 'shell' }, el('section', { className: 'hero' }, el('div', null, el('div', { className: 'eyebrow' }, el('span', { className: 'dot' }), ' YOUR PERSONAL KNOWLEDGE SPACE'), el('h1', null, 'Make room for ', el('span', { className: 'gold' }, 'good ideas'), '.'), el('p', null, 'A calmer place to capture thoughts, organise notes and keep the important things close. Simple by design. Ready whenever inspiration strikes.'), el('div', { className: 'hero-buttons' }, el('button', { className: 'btn primary', onClick: () => goAuth('signup') }, 'Create your space  →'), el('button', { className: 'btn', onClick: () => goAuth('login') }, 'I already have an account'))), el('div', { className: 'preview' }, el('div', { className: 'preview-head' }, el('b', null, '✦  YOUR NOTEBOOK'), el('span', null, 'A little clarity, every day')), el('div', { className: 'preview-grid' }, el('div', { className: 'mini-note' }, '✧', el('b', null, 'Ideas worth keeping'), el('small', null, 'Collect the little sparks before they disappear.')), el('div', { className: 'mini-note' }, '◈', el('b', null, 'Plan with purpose'), el('small', null, 'Turn scattered thoughts into clear next steps.')), el('div', { className: 'mini-note' }, '⌁', el('b', null, 'Your own space'), el('small', null, 'Personal notes, neatly in one place.')), el('div', { className: 'mini-note' }, '✦', el('b', null, 'Find it quickly'), el('small', null, 'Search and pin the notes that matter.'))))), el('div', { className: 'stats' }, el('div', { className: 'stat' }, el('strong', null, '01'), el('span', null, 'One simple workspace')), el('div', { className: 'stat' }, el('strong', null, '∞'), el('span', null, 'Room for every thought')), el('div', { className: 'stat' }, el('strong', null, '24/7'), el('span', null, 'Your ideas, always close'))), el('div', { className: 'section-title' }, el('h2', null, 'Everything you need. Nothing you don’t.'), el('span', { className: 'muted', style: { fontSize: 12 } }, 'Made for focus')), el('div', { className: 'features' }, [['✎', 'Capture instantly', 'Create, edit and organise notes without getting in your way.'], ['⌕', 'Find your thoughts', 'Search note titles and content, or filter by category.'], ['⌑', 'Keep the important close', 'Pin your favourite notes so they stay at the top.']].map(x => el('article', { className: 'feature', key: x[1] }, el('div', { className: 'ico' }, x[0]), el('h3', null, x[1]), el('p', null, x[2]))))), el('footer', { className: 'footer' }, 'NOTELY  ·  A quieter corner of your digital world'));
+            const auth = el('main', { className: 'auth-wrap' }, el('form', { className: 'auth-card', onSubmit: submitAuth }, el('div', { className: 'eyebrow' }, el('span', { className: 'dot' }), authMode === 'signup' ? 'GET STARTED' : 'WELCOME BACK'), el('h2', null, authMode === 'signup' ? 'Create your space.' : 'Good to see you.'), el('p', null, authMode === 'signup' ? 'Set up your account and start collecting your thoughts.' : 'Log in to return to your notes.'), authMode === 'signup' ? el('div', { className: 'field' }, el('label', null, 'FULL NAME'), el('input', { required: true, value: authForm.name, placeholder: 'Your name', onChange: e => setAuthForm({ ...authForm, name: e.target.value }) })) : null, el('div', { className: 'field' }, el('label', null, 'EMAIL ADDRESS'), el('input', { required: true, type: 'email', value: authForm.email, placeholder: 'you@example.com', onChange: e => setAuthForm({ ...authForm, email: e.target.value }) })), el('div', { className: 'field' }, el('label', null, 'PASSWORD'), el('input', { required: true, type: 'password', minLength: 6, value: authForm.password, placeholder: 'Enter your password', onChange: e => setAuthForm({ ...authForm, password: e.target.value }) })), message ? el('div', { className: 'message ' + (message.toLowerCase().includes('success') || message.toLowerCase().includes('created') ? 'ok' : '') }, message) : null, el('button', { className: 'btn primary full', disabled: busy }, busy ? 'Please wait…' : authMode === 'signup' ? 'Create account' : 'Log in'), el('div', { className: 'switch' }, authMode === 'signup' ? 'Already have an account? ' : 'New to Notely? ', el('button', { type: 'button', className: 'link', onClick: () => { setAuthMode(authMode === 'signup' ? 'login' : 'signup'); setMessage('') } }, authMode === 'signup' ? 'Log in' : 'Create an account'))));
+            const dashboard = el('div', { className: 'workspace' }, el('aside', { className: 'sidebar' }, el('div', { className: 'side-label' }, 'WORKSPACE'), nav('all', 'All notes', '▤'), nav('pinned', 'Pinned', '✦'), el('div', { className: 'side-label' }, 'CATEGORIES'), ...['Personal', 'Work', 'Study', 'Ideas'].map(c => nav(c, c, '◇')), el('div', { className: 'user-chip' }, el('div', { className: 'avatar' }, (user?.name || 'N').slice(0, 1).toUpperCase()), el('div', null, el('b', null, user?.name || 'My account'), el('small', null, user?.email || '')))), el('main', { className: 'mainarea' }, el('div', { className: 'dash-head' }, el('div', null, el('div', { className: 'eyebrow' }, el('span', { className: 'dot' }), ' YOUR WORKSPACE'), el('h1', null, active === 'all' ? 'Your notes' : active === 'pinned' ? 'Pinned notes' : active), el('p', null, 'A clear mind starts with a place to put things.')), el('button', { className: 'btn primary', onClick: openNew }, '+  New note')), el('div', { className: 'stats' }, el('div', { className: 'stat' }, el('strong', null, notes.length), el('span', null, 'Total notes')), el('div', { className: 'stat' }, el('strong', null, notes.filter(n => n.pinned).length), el('span', null, 'Pinned notes')), el('div', { className: 'stat' }, el('strong', null, new Set(notes.map(n => n.category)).size), el('span', null, 'Categories used'))), el('div', { className: 'toolbar' }, el('input', { className: 'search', value: query, onChange: e => setQuery(e.target.value), placeholder: '⌕  Search your notes…' }), el('button', { className: 'btn', onClick: () => setPage('profile') }, 'Profile')), el('div', { className: 'notes-grid' }, filtered.length ? filtered.map((n, i) => el('article', { className: 'note-card ' + ['goldtone', 'cyantone', 'purpletone'][i % 3], key: n.id }, el('div', { className: 'note-top' }, el('span', { className: 'tag' }, n.category), el('button', { className: 'iconbtn', title: n.pinned ? 'Unpin' : 'Pin', onClick: () => togglePin(n.id) }, n.pinned ? '★' : '☆')), el('h3', null, n.title || 'Untitled note'), el('p', null, n.body), el('div', { className: 'note-bottom' }, el('span', null, 'Edited ' + date(n.updatedAt || n.createdAt)), el('div', { className: 'note-actions' }, el('button', { className: 'iconbtn', onClick: () => editNote(n) }, 'Edit'), el('button', { className: 'iconbtn', onClick: () => removeNote(n.id) }, 'Delete'))))) : el('div', { className: 'empty' }, el('div', { className: 'big' }, '✧'), el('b', null, query ? 'No matching notes' : 'Your notebook is waiting'), el('p', null, query ? 'Try a different search term.' : 'Create your first note and make this space yours.'), !query ? el('button', { className: 'btn cyan', onClick: openNew }, '+  Create first note') : null))));
+            const profile = el('main', { className: 'workspace', style: { display: 'block', maxWidth: 900 } }, el('div', { className: 'dash-head' }, el('div', null, el('div', { className: 'eyebrow' }, 'ACCOUNT'), el('h1', null, 'Your profile'), el('p', null, 'Manage your account details.')), el('button', { className: 'btn', onClick: () => setPage('dashboard') }, '← Back to notes')), el('section', { className: 'panel' }, el('h2', null, 'Personal details'), el('form', { onSubmit: async e => { e.preventDefault(); setBusy(true); setMessage(''); try { const d = await request('/user/update', 'PATCH', { name: user.name, email: user.email }); setUser(d.user || user); setMessage(d.msg || 'Profile updated successfully') } catch (err) { setMessage(err.message) } finally { setBusy(false) } } }, el('div', { className: 'field' }, el('label', null, 'NAME'), el('input', { required: true, value: user?.name || '', onChange: e => setUser({ ...user, name: e.target.value }) })), el('div', { className: 'field' }, el('label', null, 'EMAIL'), el('input', { required: true, type: 'email', value: user?.email || '', onChange: e => setUser({ ...user, email: e.target.value }) })), message ? el('div', { className: 'message' }, message) : null, el('button', { className: 'btn primary', disabled: busy }, busy ? 'Saving…' : 'Save changes')), el('hr', { style: { borderColor: 'var(--line)', margin: '25px 0' } }), el('h2', null, 'Delete account'), el('p', { className: 'muted', style: { fontSize: 13 } }, 'This permanently removes your account from the application. Your locally saved notes will remain in this browser.'), el('button', { className: 'btn danger', onClick: async () => { if (!confirm('Are you sure? Your account will be deleted.')) return; try { await request('/user/delete', 'DELETE'); logout() } catch (err) { setMessage(err.message) } } }, 'Delete my account')));
+            const modalView = modal ? el('div', { className: 'modal-back', onMouseDown: e => { if (e.target === e.currentTarget) setModal(false) } },
+                el('form', { className: 'modal', onSubmit: saveNote },
+                    el('div', { className: 'modal-head' }, el('h2', null, editing ? 'Edit note' : 'Create a note'), el('button', { type: 'button', className: 'iconbtn', onClick: () => setModal(false) }, '✕')),
+                    el('div', { className: 'field' }, el('label', null, 'TITLE'), el('input', { value: form.title, autoFocus: true, placeholder: 'Give your note a title…', onChange: e => setForm({ ...form, title: e.target.value }) })),
+                    el('div', { className: 'field' }, el('label', null, 'CATEGORY'), el('select', { value: form.category, onChange: e => setForm({ ...form, category: e.target.value }) }, ...['Personal', 'Work', 'Study', 'Ideas'].map(c => el('option', { value: c }, c)))),
+                    el('div', { className: 'field' }, el('label', null, 'YOUR NOTE'), el('textarea', { value: form.body, placeholder: 'Start writing here…', onChange: e => setForm({ ...form, body: e.target.value }) })),
+                    el('div', { className: 'modal-actions' }, el('button', { type: 'button', className: 'btn', onClick: () => setModal(false) }, 'Cancel'), el('button', { className: 'btn primary' }, editing ? 'Save changes' : 'Save note'))
+                )
+            ) : null;
+            return el(React.Fragment, null, header, page === 'home' ? landing : page === 'auth' ? auth : page === 'profile' ? profile : dashboard, modalView);
+        }
+        createRoot(document.getElementById('root')).render(el(App));
+    </script>
+</body>
+
+</html>
