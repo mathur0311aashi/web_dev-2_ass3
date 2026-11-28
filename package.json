@@ -13,5 +13,10 @@
   "type": "commonjs",
   "dependencies": {
     "express": "^5.3.0"
+    "react": "installed-version",
+  "react-dom": "installed-version"
+    "devDependencies": {
+  "vite": "installed-version"
+}
   }
 }
